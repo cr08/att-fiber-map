@@ -1,4 +1,5 @@
 .DS_Store
 *.csv
+hasGig.csv
 *.db
 *.db-journal
