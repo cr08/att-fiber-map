@@ -1,6 +1,4 @@
 .DS_Store
-db.php
-data/
 *.csv
 *.db
 *.db-journal
