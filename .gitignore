@@ -3,3 +3,4 @@ db.php
 data/
 *.csv
 *.db
+*.db-journal
