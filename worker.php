@@ -28,7 +28,8 @@ while(true) {
 
         $ch = curl_init();
 
-        curl_setopt($ch, CURLOPT_URL, 'https://www.att.com/msapi/serviceavailability/v1/address');
+        //curl_setopt($ch, CURLOPT_URL, 'https://www.att.com/msapi/serviceavailability/v1/address');
+        curl_setopt($ch, CURLOPT_URL, 'https://www.att.com/services/shop/model/ecom/shop/view/unified/qualification/service/CheckAvailabilityRESTService/invokeCheckAvailability');
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);
         curl_setopt($ch, CURLOPT_POST, 1);
