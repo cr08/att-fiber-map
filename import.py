@@ -11,6 +11,7 @@ try:
     input = open(args.INPUT_CSV, "r")
 except OSError as error:
     print("Input file " + args.INPUT_CSV + " does not exist.")
+    sys.exit(1)
 
 try:
     output = open("addresses.db")
