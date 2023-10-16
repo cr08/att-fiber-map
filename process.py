@@ -47,8 +47,9 @@ for row in rows:
         headers = {'Origin': 'https://www.att.com', 'Accept-Encoding': 'gzip, deflate, br', 'Accept-Language': 'en-US,en;q=0.9', 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.0.0 Safari/537.36', 'Content-Type': 'application/json', 'Accept': 'application/json', 'Referer': 'https://www.att.com/buy/broadband/plans', 'Authority': 'www.att.com'}
         
         fiber_avail = False
-
-        print("Checking \033[1;33m" + row_streetnum + " " + row_street + ", " + row_zip + "\033[1;0m...  ", end="", flush=True)
+        count = count + 1
+        
+        print(str(count) + "/" + str(totalcount) + " Checking \033[1;33m" + row_streetnum + " " + row_street + ", " + row_zip + "\033[1;0m...  ", end="", flush=True)
 
         try:
             resp = requests.post(availability_url, data = json.dumps(json_data), headers = headers)
@@ -58,32 +59,25 @@ for row in rows:
             print("Unexpected error:", sys.exc_info()[0])
             sys.exit(1)
 
-        count = count + 1
-
         if fiber_avail:
-            print("\033[1;32mFiber IS available!\033[1;0m " + str(count) + "/" + str(totalcount))
+            print("\033[1;32mFiber IS available!\033[1;0m ", end="", flush=True)
             if row_fiberavail is False:
                 curtime = str(time.time())
                 cursor.execute("""UPDATE addresses SET lightgig = 1, time = ?, updated = ? WHERE id = ?;""", (curtime, curtime, row_id))
-                # sql_update_query = "UPDATE addresses SET lightGig = 1, time = " + curtime + ", updated = " + curtime + "WHERE id = " + row_id
-                # cursor.execute(sql_update_query)
             else:
                 curtime = str(time.time())
                 cursor.execute("""UPDATE addresses SET lightgig = 1, updated = ? WHERE id = ?;""", (curtime, row_id))
-                # sql_update_query = "UPDATE addresses SET lightGig = 1, updated = " + curtime + "WHERE id = " + row_id
-                # cursor.execute(sql_update_query)
         else:
-            print("\033[1;31mFiber is NOT available.\033[1;0m " + str(count) + "/" + str(totalcount))
+            print("\033[1;31mFiber is NOT available.\033[1;0m ", end="", flush=True)
             curtime = str(time.time())
             cursor.execute("""UPDATE addresses SET lightgig = 0, updated = ? WHERE id = ?;""", (curtime, row_id))
-            # sql_update_query = "UPDATE addresses SET lightGig = 0, updated = " + curtime + "WHERE id = " + row_id
-            # cursor.execute(sql_update_query)
             
     except KeyboardInterrupt:
         print("Script cancelled. Writing and closing DB.")
         break
     
     delay = random.randint(5,60)
+    print("Waiting " + str(delay) + " seconds before next check...")
     time.sleep(delay)
 
 connection.commit()
