@@ -3,6 +3,7 @@ import requests
 import json
 import sys
 import time
+import random
 
 try:
     input = open("addresses.db")
@@ -43,7 +44,8 @@ for row in rows:
             'customer_type': 'Consumer',
             'dtvMigrationFlag': False
         }
-        headers = {'content-type': 'application/json'}
+        headers = {'Origin': 'https://www.att.com', 'Accept-Encoding': 'gzip, deflate, br', 'Accept-Language': 'en-US,en;q=0.9', 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.0.0 Safari/537.36', 'Content-Type': 'application/json', 'Accept': 'application/json', 'Referer': 'https://www.att.com/buy/broadband/plans', 'Authority': 'www.att.com'}
+        
         fiber_avail = False
 
         print("Checking \033[1;33m" + row_streetnum + " " + row_street + ", " + row_zip + "\033[1;0m...  ", end="", flush=True)
@@ -76,6 +78,9 @@ for row in rows:
             cursor.execute("""UPDATE addresses SET lightgig = 0, updated = ? WHERE id = ?;""", (curtime, row_id))
             # sql_update_query = "UPDATE addresses SET lightGig = 0, updated = " + curtime + "WHERE id = " + row_id
             # cursor.execute(sql_update_query)
+            
+    delay = random.randint(5,60)
+    time.sleep(delay)
 
     except KeyboardInterrupt:
         print("Script cancelled. Writing and closing DB.")
