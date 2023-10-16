@@ -40,7 +40,7 @@ for row in contents:
     row_zip = str(row[8])
     row_hash = str(row[9])
     
-    point = Point(row_lon, row_lat)
+    point = Point(row_lat, row_lon)
     poly = Polygon(coords)
     
     result = point.within(poly)
