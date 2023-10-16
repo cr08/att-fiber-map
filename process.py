@@ -79,12 +79,12 @@ for row in rows:
             # sql_update_query = "UPDATE addresses SET lightGig = 0, updated = " + curtime + "WHERE id = " + row_id
             # cursor.execute(sql_update_query)
             
-    delay = random.randint(5,60)
-    time.sleep(delay)
-
     except KeyboardInterrupt:
         print("Script cancelled. Writing and closing DB.")
         break
+    
+    delay = random.randint(5,60)
+    time.sleep(delay)
 
 connection.commit()
 connection.close()
