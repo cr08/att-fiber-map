@@ -71,6 +71,9 @@ for row in rows:
             print("\033[1;31mFiber is NOT available.\033[1;0m ", end="", flush=True)
             curtime = str(time.time())
             cursor.execute("""UPDATE addresses SET lightgig = 0, updated = ? WHERE id = ?;""", (curtime, row_id))
+
+        # Adding commit line to ensure the database is properly updated each check.
+        connection.commit()
             
     except KeyboardInterrupt:
         print("Script cancelled. Writing and closing DB.")
