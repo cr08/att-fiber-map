@@ -13,9 +13,12 @@ except OSError as error:
 connection = sqlite3.connect('addresses.db')
 cursor = connection.cursor()
 
-cursor.execute("SELECT * FROM addresses ORDER BY updated ASC")
+cursor.execute("SELECT * FROM addresses WHERE lightGig = 0 ORDER BY updated ASC")
 
 rows = cursor.fetchall()
+totalcount = len(rows)
+
+count = 0
 
 for row in rows:
     try:
@@ -52,8 +55,10 @@ for row in rows:
         except:
             print("Unexpected error:", sys.exc_info()[0])
 
+        count = count + 1
+
         if fiber_avail:
-            print("\033[1;32mFiber IS available!\033[1;0m")
+            print("\033[1;32mFiber IS available!\033[1;0m " + count + "/" + totalcount)
             if row_fiberavail is False:
                 curtime = str(time.time())
                 cursor.execute("""UPDATE addresses SET lightgig = 1, time = ?, updated = ? WHERE id = ?;""", (curtime, curtime, row_id))
@@ -65,7 +70,7 @@ for row in rows:
                 # sql_update_query = "UPDATE addresses SET lightGig = 1, updated = " + curtime + "WHERE id = " + row_id
                 # cursor.execute(sql_update_query)
         else:
-            print("\033[1;31mFiber is NOT available.\033[1;0m")
+            print("\033[1;31mFiber is NOT available.\033[1;0m " + count + "/" + totalcount)
             curtime = str(time.time())
             cursor.execute("""UPDATE addresses SET lightgig = 0, updated = ? WHERE id = ?;""", (curtime, row_id))
             # sql_update_query = "UPDATE addresses SET lightGig = 0, updated = " + curtime + "WHERE id = " + row_id
