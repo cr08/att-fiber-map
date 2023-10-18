@@ -57,7 +57,7 @@ for row in rows:
             fiber_avail = resp_json['profile']['isGIGAFiberAvailable']
         except:
             print("Unexpected error:", sys.exc_info()[0])
-            sys.exit(1)
+            break
 
         if fiber_avail:
             print("\033[1;32mFiber IS available!\033[1;0m ", end="", flush=True)
@@ -84,4 +84,6 @@ for row in rows:
     time.sleep(delay)
 
 connection.commit()
+print("DEBUG: End of script. DB commit finished.")
 connection.close()
+print("DEBUG: End of script. DB closed.")
